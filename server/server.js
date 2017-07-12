@@ -12,7 +12,7 @@ var logger = require('morgan'),
 
   // connect to mongo
 db = mongoose.createConnection(config.database),
-Reports = db.model('Reports', report.ReportsSchema);
+Report = db.model('Reports', report.ReportsSchema);
 
 db.on('open', function(){
 	console.log("\nReporting App Mongo is set up");
@@ -30,3 +30,4 @@ db.on('open', function(){
        console.log('Server is running at: ' + 'http://localhost:3002');
     });
 });
+exports.Report = Report;

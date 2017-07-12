@@ -2,7 +2,7 @@ var express = require('express');
  
 var app = module.exports = express.Router();
  
-var Report = require('./reports');
+var Report = require('./server');
  
 // POST
 // Create a new Report
@@ -11,7 +11,7 @@ app.post('/reports', function (req, res) {
     return res.status(400).send({ "success": false, "msg": "You need to include the type of the issue !" });
   }
  
-  var newReport = new Report({
+  var newReport = new Report.Report({
     date: req.body.date,
 	type: req.body.type,
 	latitude: req.body.latitude,
@@ -32,7 +32,7 @@ app.post('/reports', function (req, res) {
 // GET
 // Get all open Reports
 app.get('/reports', function (req, res) {
-  Report.find({}, function (err, reports) {
+  Report.Report.find({}, function (err, reports) {
     if (err) {
       return res.json({ "success": false, "msg": "Error while creating a report", "error": err });
     }
