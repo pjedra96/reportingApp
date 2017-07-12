@@ -22,4 +22,5 @@ ReportsSchema.pre('save', function (next) {
     next();
 });
  
-module.exports = mongoose.model('Reports', ReportsSchema);
+exports.ReportsSchema = ReportsSchema;
+//module.exports = mongoose.model('Reports', ReportsSchema);

@@ -6,23 +6,27 @@ var logger = require('morgan'),
   bodyParser = require('body-parser'),
   mongoose = require('mongoose'),
   morgan = require('morgan'),
-  helmet = require('helmet'),
+  report = require('./reports'),
+  routes = require('./reports-routes'),
   config = require('./config.json');
- 
-mongoose.Promise = global.Promise;
-mongoose.connect(config.database, {useMongoClient: true});
-mongoose.connection.on('open', function () {
+
+  // connect to mongo
+db = mongoose.createConnection(config.database),
+Reports = db.model('Reports', report.ReportsSchema);
+
+db.on('open', function(){
+	console.log("\nReporting App Mongo is set up");
+	
 	var app = express();
 	app.use(morgan('dev'));
-	app.use(helmet());
-	app.use(cors());
-	 
-	app.use(bodyParser.urlencoded({ extended: true }));
-	app.use(bodyParser.json());
+    app.use(cors());
+
+    app.use(bodyParser.urlencoded({extended: false}));
+    app.use(bodyParser.json());
+
+    app.use(routes);
 	
-	app.use(require('./reports-routes'));
- 
-	app.listen(3002, function (err) {
-		   console.log('Server is running at: ' + 'http://localhost:3002');
-	});
+    app.listen(3002, function (err) {
+       console.log('Server is running at: ' + 'http://localhost:3002');
+    });
 });
